@@ -30,11 +30,19 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* Add Third-party headers to use open CV */
+#include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
+
 /* Module headers. */
 #include <common/include/post_process_image_segmentation.h>
 
 namespace ti::edgeai::common
 {
+// add namespaces
+using namespace std; 
+using namespace cv; 
+
 #define CLIP(X) ( (X) > 255 ? 255 : (X) < 0 ? 0 : X)
 
 // RGB -> YUV
@@ -127,6 +135,11 @@ static T1 *blendSegMask(T1         *frame,
     string output;
 #endif // defined(EDGEAI_ENABLE_OUTPUT_FOR_TEST)
 
+      // initialising count of pixel for counting pixel of each class
+      int defective_pixel=0;
+      int pump_pixel=0;
+      int background_pixel=0;
+
     // Here, (w, h) iterate over frame and (sw, sh) iterate over classes
     for (h = 0; h < outDataHeight; h++)
     {
@@ -149,10 +162,43 @@ static T1 *blendSegMask(T1         *frame,
             index = (int32_t)(sh * inDataWidth + sw);
             class_id =  classes[index];
 
+            // Here we are getting class label of each pixel
+            // Count number of pixcel of each label
+            if(class_id==1){
+            defective_pixel++;
+            }
+            else if(class_id==0){
+            pump_pixel++;
+            }
+            else {
+            background_pixel++;
+            }
+
             // random color assignment based on class-id's
-            r_m = 10 * class_id;
-            g_m = 20 * class_id;
-            b_m = 30 * class_id;
+
+            // Class_id 1 corresponds to defect lets color these pixel with green (10,255,30) color.
+            // assign any random color to other pixel 
+            
+            if(class_id == 1){
+              r_m = 10 ;
+              g_m = 255; 
+              b_m = 30 ;
+            }
+            else if(class_id==2){ // coloring background with (220,220,220)
+                r_m = 220;
+                g_m = 220;
+                b_m = 220;
+            }
+            else if(class_id==0){ // coloring pump with (255,128,128)
+                r_m = 255;
+                g_m = 128;
+                b_m = 128;
+            }
+            else{
+                r_m = 10;
+                g_m = 30;
+                b_m = 50;
+            }
 
             // Blend the original image with mask value
             *(ptr + 0) = ((r * a) + (r_m * sa)) / 255;
@@ -182,6 +228,19 @@ static T1 *blendSegMask(T1         *frame,
     debugObj.logAndAdvanceFrameNum("%s", output.c_str());
 #endif // defined(EDGEAI_ENABLE_OUTPUT_FOR_TEST)
 
+    // Adding Text "Defect Percentage" On the result with the use of putText in open CV
+    
+    float txtSize = static_cast<float>(outDataWidth)/POSTPROC_DEFAULT_WIDTH;
+    //float txtSize =0.02*outDataWidth;
+    int   rowSize = 40 * outDataWidth/POSTPROC_DEFAULT_WIDTH;
+    Scalar text_color(200, 200, 200);
+    
+    Mat img = Mat(outDataHeight, outDataWidth, CV_8UC3, frame);
+    
+    std::string title = "Percentage Defect: " + std::to_string( (float)(defective_pixel*100)/(pump_pixel+defective_pixel));
+    putText(img, title.c_str(), Point(5, rowSize),
+    FONT_HERSHEY_SIMPLEX, txtSize, Scalar(0, 0, 0), 2);
+    
     return frame;
 }
 

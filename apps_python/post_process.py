@@ -292,13 +292,37 @@ class PostProcessSegmentation(PostProcess):
         org_width = frame.shape[1]
         org_height = frame.shape[0]
 
+        # 1 in mask corresponds to defective pixel
+        # 0 in mask corresponds to Non defective pixel ( PUMP )
+        # 2 in mask corresponds to background 
+        
+        # Count number of pixcel of each label 
+        num_defect=np.count_nonzero(mask == 1)
+        num_pump=np.count_nonzero(mask==0)
+        num_background=np.count_nonzero(mask==2)
+        
+        # Claculating Percentage Defect
+        defect_percentage=round(((num_defect*100)/(num_defect+num_pump)),2)
+        
+        
         mask_image_rgb = self.gen_segment_mask(mask)
+
         mask_image_rgb = cv2.resize(
             mask_image_rgb, (org_width, org_height), interpolation=cv2.INTER_LINEAR
         )
 
         blend_image = cv2.addWeighted(
             mask_image_rgb, 1 - self.model.alpha, org_image_rgb, self.model.alpha, 0
+        )
+
+        # Adding Text "Defect Percentage" On the result with the use of putText in open CV
+        cv2.putText(
+            blend_image,
+            "Defect Percentage: "+str(defect_percentage),
+            (5, 30),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1.0,
+            (0, 0, 0),2,
         )
 
         return blend_image
@@ -312,8 +336,29 @@ class PostProcessSegmentation(PostProcess):
             inp (numpy array): Result of the model run
         """
 
-        r_map = (inp * 10).astype(np.uint8)
-        g_map = (inp * 20).astype(np.uint8)
-        b_map = (inp * 30).astype(np.uint8)
+        # 1 in mask corresponds to defective pixel
+        # 0 in mask corresponds to Non defective pixel ( PUMP )
+        # 2 in mask corresponds to background
+        
+        
+        # random color assignment based on class-id's
+        # Class_id 1 corresponds to defect lets color these pixel with green (10,255,30) color.
+        # coloring background (Class_id=2) with (220,220,220)
+        # coloring pump (Class_id=0) with (255,128,128)
+        
+        r_map=np.copy(inp)
+        r_map[r_map==0]=255
+        r_map[r_map==1]=10
+        r_map[r_map==2]=220
+        
+        g_map=np.copy(inp)
+        g_map[g_map==1]=255
+        g_map[g_map==0]=128
+        g_map[g_map==2]=220
+        
+        b_map=np.copy(inp)
+        b_map[b_map==2]=220
+        b_map[b_map==0]=128
+        b_map[b_map==1]=30
 
         return cv2.merge((r_map, g_map, b_map))
