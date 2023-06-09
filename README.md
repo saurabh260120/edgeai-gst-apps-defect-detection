@@ -479,3 +479,19 @@ class PostProcessSegmentation(PostProcess):
 - The color of the segmentation can be changed in `gen_segment_mask` function. The pixel corresponding to the defect and pump and background can be changed to some other value to change the color of the mask.
 
 - After generating the segmentation mask it is blended with the real image.
+
+
+The code changes done to add post-processing logic for human-pose-estimation can be found in this commit.
+
+Basic summary of the code changes
+apps_python: Adding new post process class for human pose estimation in post_process.py
+apps_cpp: Make a new post process class for human pose estimation and modify post_process_image.cpp to call the newly created class appropriately
+configs: Create a new config file with the downloaded/custom model
+
+
+The code changes done to add post-processing logic for human-pose-estimation can be found in this [commit](https://github.com/saurabh260120/edgeai-gst-apps-defect-detection/commit/59126d5776e08a354c2f30f94df8ecb8d4aa8735).
+
+### <ins>Basic summary of the code changes</ins>
+* **apps_python**: Modified `PostProcessSegmentation Class` in post_process.py .
+* **apps_cpp**:  Modified "post_process_image_segmentation.cpp" at `apps_cpp\common\src\post_process_image_segmentation.cpp`
+* **configs**:  Added a new config file "defect_detection.yaml"
