@@ -8,7 +8,7 @@ This Github Repository adds support for **Defect Detection** Using [EDGE-AI-Mode
 - [Result](#result)
 - [About Defect Detection in Casting Product Image Data](#defect-detection-in-casting-product-image-data)
 - [How to Train Your Own Model Using Model Maker](#how-to-train-your-own-model-using-model-maker)
-- [How to add your own custom post-processing?](#how-to-add-your-own-custom-post-processing)
+- [Custom post-processing](#custom-post-processing)
 ## Supported Devices
 
 | **DEVICE**              | **Supported**      |
@@ -58,7 +58,7 @@ This Github Repository adds support for **Defect Detection** Using [EDGE-AI-Mode
 
 ## Result
 
-https://github.com/saurabh260120/defect-detection-using-edge-ai/assets/91410452/bedce5fa-421b-4052-90a5-adc48eacdd14
+![](images/result.gif)
 
 ![copying_images](images/output_image_0001.jpg)
 
@@ -120,7 +120,7 @@ The annotation file must be in **COCO JSON** format.
 - Export the annotation in COCO-JSON. 
 
 
-https://github.com/saurabh260120/defect-detection-using-edge-ai/assets/91410452/223357ad-ad04-46c9-b88d-588ad778f012
+![Annotating-Video](images/Labelling_tutorial.gif)
 
 
 
@@ -351,9 +351,11 @@ To run the Model with Python apps:
 2. Type `./app_edgeai.py ../configs/config_file_name.yaml` in Terminal and hit Enter.
 
 
-##  How to add your own custom post-processing?
+##  Custom Post-Processing
+ 
+ The result of the model will be an image with coloured defective pixel.
+ In this Post processing, We will calculate the percentage defect in the "submersible pump impeller" For that calculate the area of defective region, and non defective region. The resultant mask from the model will categories each pixel to one of the three class defective pixel, pump, and background. \
 
-Now I will do post-processing of the result to get some more meaningful results. In this Post processing, I will calculate the percentage defect in the "submersible pump impeller".\
 Percentage defect = [defective area / ( defective area + non defective area )] * 100
 
 So for this count the pixel of the defective area and non-defective area.
@@ -403,12 +405,12 @@ class PostProcessSegmentation(PostProcess):
         # 0 in mask corresponds to Non defective pixel ( PUMP )
         # 2 in mask corresponds to background 
         
-        # Count number of pixcel of each label 
+        # Count number of pixel of each label 
         num_defect=np.count_nonzero(mask == 1)
         num_pump=np.count_nonzero(mask==0)
         num_background=np.count_nonzero(mask==2)
         
-        # Claculating Percentage Defect
+        # Calculating Percentage Defect
         defect_percentage=round(((num_defect*100)/(num_defect+num_pump)),2)
         
         
@@ -478,7 +480,7 @@ class PostProcessSegmentation(PostProcess):
 
 - The color of the segmentation can be changed in `gen_segment_mask` function. The pixel corresponding to the defect and pump and background can be changed to some other value to change the color of the mask.
 
-- After generating the segmentation mask it is blended with the real image.
+- After generating the rgb segmentation mask it is blended with the real image.
 
 
 ### <ins>Basic summary of the code changes</ins>
