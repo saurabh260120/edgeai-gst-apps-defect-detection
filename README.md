@@ -1,3 +1,6 @@
+<details >
+<summary><b>defect-detection-using-semantic-segmentation</b></summary>
+
 # defect-detection-using-semantic-segmentation
 
 This Github Repository adds support for **Defect Detection** Using [EDGE-AI-Model-Maker](https://github.com/TexasInstruments/edgeai-modelmaker) tool for TI Embedded Processor.
@@ -149,7 +152,7 @@ Make sure you have activated the Python virtual environment. By typing  `pyenv a
 **Setting up the configuration file.**
 - Go to the `edgeai-modelmaker/config_segmentation.yaml` to set up the configuration file.
 - In the yaml file under `common` change the `target_device` name according to your device.
-- Under `dataset` change the `annotation_perfix` with the name of the annotation file in `edgeai-modelmaker/data/downloads/datasets/dataset_name/annotations`. For example, if the name of your annotation file is "abcd.json". Then update `annotation_prefix:'abcd'`
+- Under `dataset` change the `annotation_prefix` with the name of the annotation file in `edgeai-modelmaker/data/downloads/datasets/dataset_name/annotations`. For example, if the name of your annotation file is "abcd.json". Then update `annotation_prefix:'abcd'`
 - `dataset_name`: You can give any name of your choice.
 - `input_data_path: ` Here give the path to the dataset. `./data/downloads/datasets/dataset_name`
 
@@ -489,3 +492,10 @@ class PostProcessSegmentation(PostProcess):
 * **configs**:  Added a new config file "defect_detection.yaml"
 
 **The code changes done to add post-processing logic for Calculating Percentage defect can be found in this** [commit](https://github.com/saurabh260120/edgeai-gst-apps-defect-detection/commit/59126d5776e08a354c2f30f94df8ecb8d4aa8735).
+
+</details>
+
+<details><summary>defect-detection-using-object-detection</summary>
+
+
+</details>
