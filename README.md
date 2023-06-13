@@ -592,13 +592,24 @@ Currently, the Edge AI Studio can compose Object detection and Image Classificat
 
 Below are the steps to use Edge AI Studio Model Composer
 
-### 2.1. Creating the project
+### 2.1 EdgeAI Studio setup
+1. On the model Composer main page, On the top bar of the GUI, click on Options → Serial Port Settings.
+2. If TI Cloud Agent is not installed on your system, a prompt will appear with instructions on how to do so.
+3. Install the TI cloud Agent.
+4. ADD [TICloudAgent Bridge](https://chrome.google.com/webstore/detail/ticloudagent-bridge/pfillhniocmjcapelhjcianojmoidjdk) extension to the browser.
+5. RELOAD the page, and reopen the Serial Port Settings.
+6. Model Composer should automatically detect the appropriate serial port and baud rate to use. The Port and Baud Rate settings can be changed. However, it is recommended to use the default detected values.
+:o: Note: If using a Windows computer, the user may need to install additional drivers for ports to show up. (https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers).\
+Click on the link. Go to Downloads. Download and install ***CP210x Windows Drivers with Serial Enumerator***.
+- For more details , on the main page go to "help --> Quick Start Guide" or  [click here](https://software-dl.ti.com/ccs/esd/training/workshop/edgeaistudio/modelcomposer_quick_start_guide.html)
+
+### 2.2. Creating the project
 1. Click on create new project.
 2. From task type Drop Down menu select "Object detection" or "Image Classification" based on the task.
 3. Write name of project
 4. Click Start Composing
 
-### 2.2. Dataset Preparation
+### 2.3. Dataset Preparation
 Data can taken from various input sources. Click on the Input Source.
 1. **PC Camera:** The Images can directly be taken using Inbuilt PC camera. Click on the PC Camera and select a Camera from the available Camera list, Select the image format from "JPG" and "PNG".
 2. **Device Camera:**
@@ -607,7 +618,7 @@ Data can taken from various input sources. Click on the Input Source.
 
 :o: *Note that the data annotated outside the edgeAI Studio can not be imported. Only the data which are annotated and Downloaded from edge AI studio, that can be uploaded.*
 
-### 2.3. Data Annotations
+### 2.4. Data Annotations
 Once dataset is imported, data annotation can be done.
 
 **Steps for annotating For Object Detection:**
@@ -630,12 +641,12 @@ Once Done with the annotations, the annotated data can be downloaded by clicking
 It is recommended to Download the Annotated Data, incase by mistake project got deleted.
 
 
-### 2.4. Model Selection
+### 2.5. Model Selection
 Once all the data is annotated, move to the next section.\
 **Device Selection:** Select the Target device. Drag the slider to find the best trade-off between power and performance for your task.\
 **Model Selection:**  Select a model according to the need "faster accuracy" or "faster Performance"
 
-### 2.5. Train
+### 2.6. Train
 Tune the training Parameter According to need. And Click on the start training button on the top-right.
 The training Performance will be Shown as shown in below image.
 
@@ -644,7 +655,7 @@ The training Performance will be Shown as shown in below image.
 Once the model is trained go to the next Section Compilation.
 
 
-### 2.6. Compilation
+### 2.7. Compilation
 In Compilation Section, Choose the compilation parameters from the drop down.
 If accuracy is not priority and only you need to compile to see the result select the "Best Speed Preset". 
 After that Hit Start Compiling.
@@ -662,7 +673,17 @@ The Downloaded model will look like this:
 
 ![plot](images/model_directory.png)
 
-### 2.7. Live Preview
+### 2.8. Live Preview
+
+Once the model is compiled , Live Preview can be done. In live preview we can test our compiled model with live camera.
+Some setting needs to be done before live preview.
+Follow these step to live preview:
+1. Select Live preview in the top part of the page.
+2. Connect the board to PC by UART cable.
+3. At the bottom left click on capsule like icon. After clicking , Hardware connected will be shown at bottom left.
+![Connect to ti agent](images/TI_agent.png)
+4. Press the Device Setup button to configure the development board.
+5. Press the Start Live preview button to download the model from the server to the EVM and run the preview.
 
 
 ## 3. Deployment on Board
