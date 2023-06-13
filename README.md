@@ -1,9 +1,18 @@
+# Edge AI GStreamer Apps for Defect Detection
+
+This repo adds support for Defect Detection on top of edgeai-gst-apps
+
+This Repository contains two part:
+1. Defect Detection Using Semantic Segmentation
+2. Defect detection using Object Detection
+
+Click On the below headings to expand.
+
 <details >
-<summary><b>Defect Detection using Semantic Segmentation</b></summary>
+<summary><h2 style="display:inline;cursor: pointer;">Defect Detection using Semantic Segmentation</h2></summary>
 
-# defect-detection-using-semantic-segmentation
 
-> This Github Repository adds support for **Defect Detection** Using [**EDGE-AI-Model-Maker**](https://github.com/TexasInstruments/edgeai-modelmaker) tool for TI Embedded Processor.
+> This Github Repository adds support for **Defect Detection using semantic segmentation** Using [**EDGE-AI-Model-Maker**](https://github.com/TexasInstruments/edgeai-modelmaker) tool for TI Embedded Processor.
 
 ## Table of content
 - [Supported Devices](#supported-devices)
@@ -12,6 +21,7 @@
 - [Dataset Overview](#defect-detection-in-casting-product-image-data)
 - [How to Train Your Own Model Using Model Maker](#how-to-train-your-own-model-using-model-maker)
 - [Custom post-processing](#post-processing)
+
 ## Supported Devices
 
 | **DEVICE**              | **Supported**      |
@@ -495,11 +505,10 @@ class PostProcessSegmentation(PostProcess):
 
 </details>
 
-<hr style="border:2px solid black">
+***
 
-<details><summary><b>Defect Detection Using Object Detection</b></summary>
+<details><summary><h2 style="display:inline;cursor: pointer;" >Defect Detection Using Object Detection</h2></summary>
 
-# Defect Detection Using Object Detection
 > This Github Repository adds support for **Surface Crack Detection** Using [EDGE-AI-STUDIO](https://www.ti.com/tool/EDGE-AI-STUDIO) Model Composer  for TI Embedded Processor.
 
 ## Table of content
@@ -517,7 +526,44 @@ class PostProcessSegmentation(PostProcess):
 
 ## Steps To Run on Target Device
 
+1. Clone this repo in your target under /opt
 
+    ```console
+    root@tda4vm-sk:/opt# git clone https://github.com/TexasInstruments/edgeai-gst-apps-defect-detection.git
+    root@tda4vm-sk:/opt# cd edgeai-gst-apps-defect-detection
+    ```
+
+2. Download model for Surface Crack detection
+
+    ```console
+    root@tda4vm-sk:/opt/edgeai-gst-apps-defect-detection# ./download_models.sh -d defect_detection
+    ```
+
+3. Download sample input video
+
+    ```console
+    root@tda4vm-sk:/opt/edgeai-gst-apps-human-pose# wget --proxy off http://software-dl.ti.com/jacinto7/esd/edgeai-test-data/demo_videos/human_pose_estimation_sample.h264 -O /opt/edgeai-test-data/videos/human_pose_estimation_sample.h264
+    ```
+
+4. Run the python app
+
+    ```console
+    root@tda4vm-sk:/opt/edgeai-gst-apps-defect-detection# cd apps_python
+    root@tda4vm-sk:/opt/edgeai-gst-apps-defect-detection/apps_python# ./app_edgeai.py ../configs/surface_defect_detection.yaml
+    ```
+
+5. Compile cpp apps
+
+    ```console
+    root@tda4vm-sk:/opt/edgeai-gst-apps-defect-detection# ./scripts/compile_cpp_apps.sh
+    ```
+
+5. Run CPP app
+
+    ```console
+    root@tda4vm-sk:/opt/edgeai-gst-apps-defect-detection# cd apps_cpp
+    root@tda4vm-sk:/opt/edgeai-gst-apps-defect-detection/apps_cpp# ./bin/Release/app_edgeai ../configs/surface_defect_detection.yaml
+    ```
 
 ## Results
 ![Result1](images/Surface_output_image_0003.jpg)
@@ -528,8 +574,7 @@ class PostProcessSegmentation(PostProcess):
 ## Surface Crack dataset Overview
 Concrete surface cracks are major defect in civil structures. Crack detection plays a major role in the building inspection, finding the cracks and determining the building health.
 
-This Project uses Object detection in **Edge AI Studio** to detect the defect and make bounding boxes around them.
-
+This Project uses Object detection in **Edge AI Studio** to train and compile the model.
 
 # How to Train Your Own Model Using EDGEAI-STUDIO
 
@@ -547,13 +592,13 @@ Currently, the Edge AI Studio can compose Object detection and Image Classificat
 
 Below are the steps to use Edge AI Studio Model Composer
 
-### 1. Creating the project
+### 2.1. Creating the project
 1. Click on create new project.
 2. From task type Drop Down menu select "Object detection" or "Image Classification" based on the task.
 3. Write name of project
 4. Click Start Composing
 
-### 2. Dataset Preparation
+### 2.2. Dataset Preparation
 Data can taken from various input sources. Click on the Input Source.
 1. **PC Camera:** The Images can directly be taken using Inbuilt PC camera. Click on the PC Camera and select a Camera from the available Camera list, Select the image format from "JPG" and "PNG".
 2. **Device Camera:**
@@ -562,7 +607,7 @@ Data can taken from various input sources. Click on the Input Source.
 
 :o: *Note that the data annotated outside the edgeAI Studio can not be imported. Only the data which are annotated and Downloaded from edge AI studio, that can be uploaded.*
 
-### 3. Data Annotations
+### 2.3. Data Annotations
 Once dataset is imported, data annotation can be done.
 
 **Steps for annotating For Object Detection:**
@@ -585,12 +630,12 @@ Once Done with the annotations, the annotated data can be downloaded by clicking
 It is recommended to Download the Annotated Data, incase by mistake project got deleted.
 
 
-### 4. Model Selection
+### 2.4. Model Selection
 Once all the data is annotated, move to the next section.\
 **Device Selection:** Select the Target device. Drag the slider to find the best trade-off between power and performance for your task.\
 **Model Selection:**  Select a model according to the need "faster accuracy" or "faster Performance"
 
-### 5. Train
+### 2.5. Train
 Tune the training Parameter According to need. And Click on the start training button on the top-right.
 The training Performance will be Shown as shown in below image.
 
@@ -599,7 +644,7 @@ The training Performance will be Shown as shown in below image.
 Once the model is trained go to the next Section Compilation.
 
 
-### 6. Compilation
+### 2.6. Compilation
 In Compilation Section, Choose the compilation parameters from the drop down.
 If accuracy is not priority and only you need to compile to see the result select the "Best Speed Preset". 
 After that Hit Start Compiling.
@@ -617,15 +662,15 @@ The Downloaded model will look like this:
 
 ![plot](images/Model_directory.png)
 
-### 7. Live Preview
+### 2.7. Live Preview
 
 
-## Deployment on Board
+## 3. Deployment on Board
 Model can be Deployed on the board in two ways:
 1. Connect the board and click Deploy model on board.
 2. Manually Copying the Model on the board.
 
-### Connecting Board to PC using UART
+### 3.1Connecting Board to PC using UART
 1. Install the [MobaXterm](https://mobaxterm.mobatek.net/download.html) to the PC to remotely connect to the Board.
 2. Once installed connect the board to the PC through the UART cable. 
 3. Open MobaXterm and Click on session.
@@ -640,7 +685,7 @@ Click on the link. Go to Downloads. Download and install ***CP210x Windows Drive
 8. In login prompt : type `root` as user.
 9. Your current directory in terminal will be like: `/opt/edgeai-gst-apps`
 
-### Connecting remotely using SSH
+### 3.2 Connecting remotely using SSH
  You can also access the device with the IP address that is shown on the display. With the IP address one can ssh directly to the board.\
  In MObaXterm:
  1. Click session
@@ -671,10 +716,10 @@ We can use `scp` Command to copy the model from our PC to the board.
 
 
 
-## Testing on the board
+## 4. Testing on the board
 
 
-### 1. Importing data on the board
+### 4.1. Importing data on the board
 Before Importing Images to the board, Rename the images file sequentially.
 ```0000.png , 0001.png ,0002.png ......... 000n.png```
 It will help in slide showing images on the screen.
@@ -688,7 +733,7 @@ To copy the data to the board `scp` command can be used again.
 
 
 
-### 2. Making Configuration file
+### 4.2. Making Configuration file
 Next task is to make Configuration file for the project. 
 The config folder is located at `opt/edgeai-gst-apps/configs`
 (You can make a copy of the existing `.yaml` file and edit it or else you can make a new `.yaml` file.)
@@ -778,7 +823,7 @@ The Fourth number shows the length of result to be shown along Y axis .
 
 
 
-## Running the Model
+## 5. Running the Model
 Once You have done below three things:
 1. Copied model to the board
 2. Copied dataset to the Board
@@ -789,12 +834,5 @@ We can run the model using python-apps or CPP apps.
 To run the Model with python apps:
 1. Go to `/opt/edgeai-gst-apps/apps_python`
 2. Type `./app_edgeai.py ../configs/config_file_name.yaml` in Terminal and hit Enter.
-
-
-## Post Processing
-
-In Object Detection , We will get a bounding Box with label around the Object.\
-Apart from this we can Add some Custom Post Processing. And show some meaning full result.
- 
 
 </details>
