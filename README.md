@@ -1,12 +1,12 @@
 # Edge AI GStreamer Apps for Defect Detection
 
-This repo adds support for Defect Detection on top of edgeai-gst-apps
+This Repository adds support for Defect Detection on top of edgeai-gst-apps
 
 This Repository contains two part:
 1. Defect Detection Using Semantic Segmentation
 2. Defect detection using Object Detection
 
-Click On the below headings to expand.
+> Click On the below headings to expand.
 
 <details >
 <summary><h2 style="display:inline;cursor: pointer;">Defect Detection using Semantic Segmentation</h2></summary>
@@ -509,7 +509,7 @@ class PostProcessSegmentation(PostProcess):
 
 <details><summary><h2 style="display:inline;cursor: pointer;" >Defect Detection Using Object Detection</h2></summary>
 
-> This Github Repository adds support for **Surface Crack Detection** Using [EDGE-AI-STUDIO](https://www.ti.com/tool/EDGE-AI-STUDIO) Model Composer  for TI Embedded Processor.
+> This Github Repository adds support for **Surface Crack Detection** Using [EDGE-AI-STUDIO](https://www.ti.com/tool/EDGE-AI-STUDIO) Model Composer tool for TI Embedded Processor.
 
 ## Table of content
 - [Supported Devices](#supported-target-devices)
@@ -517,7 +517,8 @@ class PostProcessSegmentation(PostProcess):
 - [Result](#results)
 - [Dataset Overview](#surface-crack-dataset-overview)
 - [How to Train Your Own Model Using EDGEAI-STUDIO](#how-to-train-your-own-model-using-edgeai-studio)
-- [Custom post-processing](#custom-post-processing)
+- [Custom Post Processing](#custon-post-processing)
+
 ## Supported Target Devices
 
 | **DEVICE**              | **Supported**      |
@@ -566,10 +567,8 @@ class PostProcessSegmentation(PostProcess):
     ```
 
 ## Results
-![Result1](images/Surface_output_image_0003.jpg)
 
-![Result2](images/Surface_output_image_0017.jpg)
-
+![Result](images/SurfaceCrackgif.gif)
 
 ## Surface Crack dataset Overview
 Concrete surface cracks are major defect in civil structures. Crack detection plays a major role in the building inspection, finding the cracks and determining the building health.
@@ -660,7 +659,7 @@ Click on **Download the Artifact to PC** to Download the Compiled model on the L
 
 The Downloaded model will look like this:
 
-![plot](images/Model_directory.png)
+![plot](images/model_directory.png)
 
 ### 2.7. Live Preview
 
@@ -670,7 +669,7 @@ Model can be Deployed on the board in two ways:
 1. Connect the board and click Deploy model on board.
 2. Manually Copying the Model on the board.
 
-### 3.1Connecting Board to PC using UART
+### 3.1 Connecting Board to PC using UART
 1. Install the [MobaXterm](https://mobaxterm.mobatek.net/download.html) to the PC to remotely connect to the Board.
 2. Once installed connect the board to the PC through the UART cable. 
 3. Open MobaXterm and Click on session.
@@ -834,5 +833,47 @@ We can run the model using python-apps or CPP apps.
 To run the Model with python apps:
 1. Go to `/opt/edgeai-gst-apps/apps_python`
 2. Type `./app_edgeai.py ../configs/config_file_name.yaml` in Terminal and hit Enter.
+
+
+## Custom Post Processing
+
+From Object Detection , a bounding Box with label around the Object is displayed.
+Apart from this we can Add some Custom Post Processing.
+In Surface crack detection we will count number of Cracks in the given image as the post processing.
+The Code changes for that in `apps_python/post_processing.py` is given below.
+```
+
+# THIS WILL COUNT THE NUMBER OF CRACKS IN THE SURFACE
+# THE NUMBER OF CRACK WILL BE EQUAL TO NUMBER OF BOUNDING BOXES
+
+# COUNTING number of bounding boxes
+b_num=0
+for b in bbox:
+if b[5] > self.model.viz_threshold:
+b_num=b_num+1
+```
+
+Displaying the text using open CV:
+```
+cv2.rectangle(
+            img,
+            (0, 0),
+            (350, 50),
+            (255,255,255),
+            -1,
+        )
+        
+        # PUT THE NUMBER OF CRACK TEXT
+        cv2.putText(
+            img,
+            "Number of Cracks :"+str(b_num),
+            (5, 30),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1.0,
+            (0, 0, 0),2,
+        )
+```
+
+
 
 </details>
