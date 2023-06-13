@@ -199,13 +199,39 @@ class PostProcessDetection(PostProcess):
             bbox[..., (0, 2)] /= self.model.resize[0]
             bbox[..., (1, 3)] /= self.model.resize[1]
 
+        # THIS CODE IS MODIFIED FOR THE SURFACE CRACK DETECTION\
+        # THIS WILL COUNT THE NUMBER OF CRACKS IN THE SURFACE
+        # THE NUMBER OF CRACK WILL BE EQUAL TO NUMBER OF BOUNDING BOXES
+        
+        # COUNTING number of bounding boxes
+        b_num=0             
+
         for b in bbox:
             if b[5] > self.model.viz_threshold:
+                b_num=b_num+1  # increasing count for bounding boxes
                 if type(self.model.label_offset) == dict:
                     class_name = self.model.classnames[self.model.label_offset[int(b[4])]]
                 else:
                     class_name = self.model.classnames[self.model.label_offset + int(b[4])]
                 img = self.overlay_bounding_box(img, b, class_name)
+
+        # PUT THE NUMBER OF CRACK TEXT
+        cv2.rectangle(
+            img,
+            (0, 0),
+            (350, 50),
+            (255,255,255),
+            -1,
+        )
+        cv2.putText(
+            img,
+            "Number of Cracks :"+str(b_num),
+            (5, 30),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1.0,
+            (0, 0, 0),2,
+        )
+
 
         if self.debug:
             self.debug.log(self.debug_str)
@@ -228,7 +254,7 @@ class PostProcessDetection(PostProcess):
             int(box[2] * frame.shape[1]),
             int(box[3] * frame.shape[0]),
         ]
-        box_color = (20, 220, 20)
+        box_color = (255, 51, 51)
         text_color = (0, 0, 0)
         cv2.rectangle(frame, (box[0], box[1]), (box[2], box[3]), box_color, 2)
         cv2.rectangle(

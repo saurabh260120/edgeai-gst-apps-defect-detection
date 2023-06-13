@@ -762,7 +762,7 @@ inputs:
         height: 720
         index: 0
         framerate: 1
-        loop: False
+        loop: True
 models:
     model0:
         model_path: /opt/model_zoo/DD_surface_crack_yolox_s_lite_onnxrt_TDA4VM
@@ -778,18 +778,18 @@ outputs:
         sink: kmssink
         width: 1920
         height: 1080
-        overlay-performance: True
+        overlay-performance: false
     output1:
         sink: /opt/edgeai-test-data/output/output_video1.mp4
         width: 1920
         height: 1080
     output2:
         sink: /opt/edgeai-test-data/output/output_image_%04d.jpg
-        width: 720
-        height: 720
+        width: 1920
+        height: 1080
 
 flows:
-    flow0: [input2,model0,output2]
+    flow0: [input2,model0,output0,[320,180,1280,720]]
 ```
 
 1. inputs :  
