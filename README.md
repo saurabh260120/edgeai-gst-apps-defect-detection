@@ -572,6 +572,7 @@ class PostProcessSegmentation(PostProcess):
 
 ## Surface Crack dataset Overview
 Concrete surface cracks are major defect in civil structures. Crack detection plays a major role in the building inspection, finding the cracks and determining the building health.
+The Dataset is taken from the Kaggle. [link to dataset](https://www.kaggle.com/datasets/arunrk7/surface-crack-detection).
 
 This Project uses Object detection in **Edge AI Studio** to train and compile the model.
 
@@ -716,7 +717,6 @@ We can use `scp` Command to copy the model from our PC to the board.
 
 
 ## 4. Testing on the board
-
 
 ### 4.1. Importing data on the board
 Before Importing Images to the board, Rename the images file sequentially.
@@ -874,6 +874,7 @@ cv2.rectangle(
         )
 ```
 
+The Code changes related to surface crack detection and post processing can be found in this [commit](https://github.com/saurabh260120/edgeai-gst-apps-defect-detection/commit/126b1f065b2f3869759f81344540107cc6c5eec0) .
 
 
 </details>
