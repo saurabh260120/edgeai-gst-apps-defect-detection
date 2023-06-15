@@ -4,14 +4,15 @@ This Repository adds support for Defect Detection on top of edgeai-gst-apps
 
 This Repository contains two part:
 
-- [Surface Crack detection using Object Detection](#surface-crack-detection-using-object-detection)
+## [Surface Crack detection using Object Detection](#surface-crack-detection-using-object-detection)
+Concrete surface cracks are major defect in civil structuresCrack detection plays a major role in the building inspection, finding the cracks and determining the building health.<br> The Model has been Trained Using [EdgeAI Studio - Model Composer](https://dev.ti.com/modelcomposer/) tool. EdgeAi Studio ModelComposer is a fully integrated no-code solution for training and compiling models for deployment into edge AI applications. 
 <br>
-Concrete surface cracks are major defect in civil structures. Building Inspection which is done for the evaluation of rigidity and tensile strength of the building. Crack detection plays a major role in the building inspection, finding the cracks and determining the building health.<br> The Model has been Trained Using [EdgeAI Studio - Model Composer](https://dev.ti.com/modelcomposer/) .
-
-- [Casting  Defect Detection Using Semantic Segmentation](#casting-defect-detection-using-semantic-segmentation)
 <br>
+## [Casting  Defect Detection Using Semantic Segmentation](#casting-defect-detection-using-semantic-segmentation)
 Casting is a manufacturing process in which a liquid material is usually poured into a mould, which contains a hollow cavity of the desired shape, and then allowed to solidify.<br> The Dataset used are top view of submersible pump impeller.<br>
-The Model has been trained using [EdgeAI ModelMaker](https://github.com/TexasInstruments/edgeai-modelmaker).
+The Model has been trained using [EdgeAI ModelMaker](https://github.com/TexasInstruments/edgeai-modelmaker) tool. 
+The edgeai-modelmaker is an end-to-end model development tool that contains dataset handling, model training, and compilation.
+This is a command line tool and requires a Linux PC.
 
 
 <br>
