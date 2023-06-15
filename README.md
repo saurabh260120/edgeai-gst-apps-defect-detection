@@ -4,11 +4,11 @@ This Repository adds support for Defect Detection on top of edgeai-gst-apps
 
 This Repository contains two part:
 
-## [Surface Crack detection using Object Detection](#surface-crack-detection-using-object-detection)
+## [1. Surface Crack detection using Object Detection](#surface-crack-detection-using-object-detection)
 Concrete surface cracks are major defect in civil structuresCrack detection plays a major role in the building inspection, finding the cracks and determining the building health.<br> The Model has been Trained Using [EdgeAI Studio - Model Composer](https://dev.ti.com/modelcomposer/) tool. EdgeAi Studio ModelComposer is a fully integrated no-code solution for training and compiling models for deployment into edge AI applications. 
 <br>
 <br>
-## [Casting  Defect Detection Using Semantic Segmentation](#casting-defect-detection-using-semantic-segmentation)
+## [2. Casting  Defect Detection Using Semantic Segmentation](#casting-defect-detection-using-semantic-segmentation)
 Casting is a manufacturing process in which a liquid material is usually poured into a mould, which contains a hollow cavity of the desired shape, and then allowed to solidify.<br> The Dataset used are top view of submersible pump impeller.<br>
 The Model has been trained using [EdgeAI ModelMaker](https://github.com/TexasInstruments/edgeai-modelmaker) tool. 
 The edgeai-modelmaker is an end-to-end model development tool that contains dataset handling, model training, and compilation.
@@ -240,7 +240,7 @@ The config folder is located at `opt/edgeai-gst-apps/configs`
 
 **Component of config file**
 
-```
+```console
 title: "Surface Crack Detection"
 log_level: 2
 inputs:
@@ -341,8 +341,7 @@ From Object Detection , a bounding Box with label around the Object is displayed
 Apart from this we can Add some Custom Post Processing.
 In Surface crack detection we will count number of Cracks in the given image as the post processing.
 The Code changes for that in `apps_python/post_processing.py` is given below.
-```
-
+```console
 # THIS WILL COUNT THE NUMBER OF CRACKS IN THE SURFACE
 # THE NUMBER OF CRACK WILL BE EQUAL TO NUMBER OF BOUNDING BOXES
 
@@ -354,7 +353,7 @@ b_num=b_num+1
 ```
 
 Displaying the text using open CV:
-```
+```console
 cv2.rectangle(
             img,
             (0, 0),
@@ -577,7 +576,7 @@ Following are the important Directory for the Model Deployment.
 We can use `scp` Command to copy the model from our PC to the board.
  Go to the directory where Model is saved. Type the following command:
 
-```
+```console
 scp -r model_folder_name root@ip_address_of_board:/opt/model_zoo
 ```
 Note: ip_address_of_board will be shown on the monitor when you will start the board after connecting to all peripherals.
@@ -605,7 +604,7 @@ The config folder is located at `opt/edgeai-gst-apps/configs`
 
 **Component of config file**
 
-```
+```console
 title: "Defect Detection Using Semantic Segmentation"
 log_level: 2
 inputs:
@@ -711,7 +710,7 @@ So for this count the pixel of the defective area and non-defective area.
 
 Post-processing in Python is located at: `opt/edgeai-gst-apps/apps_python/post_process.py`
 
-```
+```console
 class PostProcessSegmentation(PostProcess):
     def __call__(self, img, results):
         """
