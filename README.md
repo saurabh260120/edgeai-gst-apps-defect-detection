@@ -240,7 +240,7 @@ The config folder is located at `opt/edgeai-gst-apps/configs`
 
 **Component of config file**
 
-```console
+```yaml
 title: "Surface Crack Detection"
 log_level: 2
 inputs:
@@ -341,7 +341,7 @@ From Object Detection , a bounding Box with label around the Object is displayed
 Apart from this we can Add some Custom Post Processing.
 In Surface crack detection we will count number of Cracks in the given image as the post processing.
 The Code changes for that in `apps_python/post_processing.py` is given below.
-```console
+```python
 # THIS WILL COUNT THE NUMBER OF CRACKS IN THE SURFACE
 # THE NUMBER OF CRACK WILL BE EQUAL TO NUMBER OF BOUNDING BOXES
 
@@ -353,7 +353,7 @@ b_num=b_num+1
 ```
 
 Displaying the text using open CV:
-```console
+```python
 cv2.rectangle(
             img,
             (0, 0),
@@ -510,7 +510,7 @@ The annotation file must be in **COCO JSON** format.
 1. there must be an "images" folder containing the images
 2. there must be an annotations folder containing the annotation JSON file with the name given below.
 
-```
+```yaml
 edgeai-modelmaker/data/downloads/datasets/dataset_name
                              |
                              |--images
@@ -537,7 +537,7 @@ Make sure you have activated the Python virtual environment. By typing  `pyenv a
 - `num_gpu` is the number of GPUs you will be using for the training.
 
 - Then finally under `compilation` tune the parameter according to your need. You can add `calibration_frames` and `calibration_frames` also.
-```
+```python
 compilation:
     # enable/disable compilation
     enable: True #False
@@ -604,7 +604,7 @@ The config folder is located at `opt/edgeai-gst-apps/configs`
 
 **Component of config file**
 
-```console
+```yaml
 title: "Defect Detection Using Semantic Segmentation"
 log_level: 2
 inputs:
@@ -710,7 +710,7 @@ So for this count the pixel of the defective area and non-defective area.
 
 Post-processing in Python is located at: `opt/edgeai-gst-apps/apps_python/post_process.py`
 
-```console
+```python
 class PostProcessSegmentation(PostProcess):
     def __call__(self, img, results):
         """
