@@ -388,7 +388,7 @@ The Code changes related to surface crack detection and post processing can be f
 - [Dataset Overview](#defect-detection-in-casting-product-image-data)
 - [How to Train Your Own Model Using Model Maker](#how-to-train-your-own-model-using-model-maker)
 - [Custom post-processing](#post-processing)
-
+- [Optimizing Model For ARM Devices](#optimizing-model-for-arm-devices)
 ## Supported Devices
 
 | **DEVICE**              | **Supported**      |
@@ -837,3 +837,25 @@ class PostProcessSegmentation(PostProcess):
 * **configs**:  Added a new config file "defect_detection.yaml"
 
 **The code changes done to add post-processing logic for Calculating Percentage defect can be found in this** [commit](https://github.com/saurabh260120/edgeai-gst-apps-defect-detection/commit/59126d5776e08a354c2f30f94df8ecb8d4aa8735).
+
+
+## Optimizing Model For ARM Devices
+
+Running a trained model from edgeAI model maker on ARM device may have poor performance in terms of inference time. These model could be slow. So to improve the inference time we can do Quantization of the **onnx model**. 
+
+[ONNX Quantization](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html) is the process of reducing the precision of the weights and activations in an ONNX model, with minimal losses in accuracy. 
+
+There are two ways to represent quantized ONNX models :
+1. Operator-oriented (QOperator)
+2. Tensor-oriented (QDQ; Quantize and DeQuantize)
+
+Both can be tried and chosen according to the results. **QOperator** gives for better result than QDQ for TI devices. 
+More Datails about the ONNX Quantization can be found out at [https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html) .
+
+Refer these [end-to-end-examples](https://github.com/microsoft/onnxruntime-inference-examples/tree/main/quantization/image_classification/cpu) for ONNX Runtime Quantization Example and script for quantization.  
+To run the given script few parameter needs to be changes according to your model.   
+Refer [THIS](https://github.com/microsoft/onnxruntime/blob/main/onnxruntime/python/tools/quantization/quantize.py)  to know more about the parameters for the quantization.
+
+**NOTE :** To Run the QOperator Quantization model on the target , `onnxruntime` python library may needs to be updated to newer version. `onnxruntime 1.15` worked for me.  
+If QOperator Quantized model is giving some operator error. Uninstall the current version of `onnxruntime` and try with higher version.
+
